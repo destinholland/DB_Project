@@ -1,0 +1,31 @@
+{% extends "homeBase.html" %}
+{% block TopRightIcon %}<li><a id="tr_icon" href="{{ url_for('register') }}">Account</a></li>{% endblock %}
+
+{% block content %}
+    <div class="choose-content">
+        <form method="POST" action="">
+            {{ formdate.hidden_tag() }}
+            <fieldset class="form-group">
+
+                <legend class="mb-4 logo" style="color: papayawhip; text-align: center; text-decoration: underline; text-decoration-color: papayawhip">Choose Table</legend>
+
+                <div class="form-group">
+                    {{ formdate.dt.label(class="form-control-label") }}
+                    {{ formdate.dt(class="form-control form-control-lg datepicker") }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ formdate.table.label(class="form-control-label") }}
+                    {{ formdate.table(class="form-control form-control-lg") }}
+                </div>
+
+            </fieldset>
+
+            <div class="form-group">
+                {{ formdate.submit(class="btn btn-secondary btn-lg btn-block") }}
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
