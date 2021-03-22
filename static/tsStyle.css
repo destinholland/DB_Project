@@ -1,0 +1,214 @@
+*
+{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+
+html
+{
+    height: 100%;
+    width: 100%;
+}
+
+
+body
+{
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right,
+    #005F60 0%,
+    #005F60 10%,
+    #008083 10%,
+    #008083 100%);
+}
+
+
+.top
+{
+    background-color: #FD5901;
+    position: fixed;
+    height: 13%;
+    width: 100%;
+    z-index: 1;
+}
+
+label.logo, .logo
+{
+    /*color: #490F4A;*/
+    color: papayawhip;
+    font-size: 35px;
+    line-height: 80px;
+    padding: 0 100px;
+    font-weight: bold;
+}
+
+nav ul
+{
+    float: right;
+    margin-right: 20px;
+}
+
+nav ul li
+{
+    display: inline-block;
+    line-height: 80px;
+    margin: 0 10px;
+}
+
+nav ul li a
+{
+    color: white;
+    font-size: 17px;
+    padding: 7px 13px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+
+#tr_icon
+{
+    color: papayawhip;
+}
+
+
+#tr_icon:active, #tr_icon:hover
+{
+    color: white;
+    background: #734F96;
+    transition: .5s;
+}
+
+
+.text-muted
+{
+    margin: auto;
+}
+
+
+.alert
+{
+    text-align: center;
+    z-index: 1;
+    margin-top: 7%;
+}
+
+
+.sidebar
+{
+    position: fixed;
+    top: 20%;
+    /*height: 35%;*/
+    width: 8%;
+}
+
+
+.sidebar ul
+{
+    position: relative;
+    top: 50%;
+    margin-left: 0;
+}
+
+
+.sidebar ul li
+{
+    display: block;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+
+.sidebar ul li i
+{
+    font-size: 250%;
+    padding-top: 50%;
+    padding-bottom: 50%;
+    padding-left: 20%;
+}
+
+
+.sidebar ul li i:hover
+{
+    padding-left: 40%;
+}
+
+
+.fa-plus-circle:active
+{
+    color: #490F4A;
+}
+
+
+.fa-plus-circle:hover, .fa-handshake-o:hover, .fa-table:hover, .fa-sign-out:hover
+{
+    /*color: #FBAED2;*/
+    color: lightcoral;
+}
+
+
+.fa-plus-circle, .fa-handshake-o, .fa-table, .fa-sign-out
+{
+    color: papayawhip;
+}
+
+
+/*.under*/
+/*{*/
+/*    position: absolute;*/
+/*    top: 13%;*/
+/*    height: 87%;*/
+/*    width: 100%;*/
+/*}*/
+
+
+.choose-content
+{
+    border: 2px solid papayawhip;
+    padding: 5px;
+    border-radius: 25px;
+    background: lightcoral;
+    margin-top: 20%;
+}
+
+
+.login-content
+{
+    border: 2px solid papayawhip;
+    padding: 5px;
+    border-radius: 25px;
+    background: lightcoral;
+    position: absolute;
+    width: 50%;
+    margin-top: 15%;
+    margin-left: 0;
+}
+
+
+.register-content
+{
+    border: 2px solid papayawhip;
+    padding: 5px;
+    border-radius: 25px;
+    background: lightcoral;
+    position: absolute;
+    width: 80%;
+    margin-top: 15%;
+    margin-left: 0;
+}
+
+
+.form-control-label
+{
+    color: papayawhip;
+    text-align: center;
+}
+
+
+.page-content
+{
+    margin-left: 10%;
+}
