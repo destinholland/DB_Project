@@ -19,7 +19,15 @@ def account():
 
 @app.route('/add')
 def add():
-    return render_template('homeBase.html')
+    import cx_Oracle
+    from DBconnection import connection
+
+    cursor = connection.cursor()
+
+    data = cursor.execute("SELECT * FROM RC4.Heat_Index FETCH FIRST 1 ROWS ONLY") # Cursor.execute returns an iterator that contains the results of the query
+    data = next( data ) # next( data ) gets the first row in the query result
+
+    return render_template('homeBase.html', data=data)
 
 
 @app.route('/join')
