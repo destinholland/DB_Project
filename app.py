@@ -1,7 +1,14 @@
-from flask import Flask, render_template, url_for, flash, redirect
+from flask import Flask, render_template, url_for, flash, redirect, request
 from forms import RegistrationForm, LoginForm, TableForm
 from flask_bootstrap import Bootstrap
 from datetime import datetime
+import cx_Oracle
+from DBconnection import connection
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -19,16 +26,70 @@ def account():
 
 @app.route('/add')
 def add():
-    import cx_Oracle
-    from DBconnection import connection
+    return render_template("homeBase.html")
 
-    cursor = connection.cursor()
+@app.route('/graph1', methods=[ 'GET', 'POST' ])
+def graph1():
 
-    data = cursor.execute("SELECT * FROM RC4.Heat_Index FETCH FIRST 1 ROWS ONLY") # Cursor.execute returns an iterator that contains the results of the query
-    data = next( data ) # next( data ) gets the first row in the query result
+    if request.method == 'GET':
+        return f"Invalid GET request"
 
-    return render_template('homeBase.html', data=data)
+    if request.method == 'POST':
 
+        form_data = request.form
+
+        whereClause = f"WHERE (name = '{form_data['counties']}')"
+        orderByClause = "\nORDER BY rc4.County.name ASC, year ASC, mnum ASC\n"
+
+        if form_data['start'] != '':
+            whereClause = whereClause + f" AND (year >= {str(form_data['start'])[0:4]})"
+
+        if form_data['end'] != '':
+            whereClause = whereClause + f" AND (year <= {str(form_data['end'])[0:4]})"
+
+        dbQuery = """
+        SELECT name, year, month, Month_Average --Retrieves relevant information (Removes mnum that was used for ordering)
+        FROM (
+            SELECT rc4.County.name, year, month, Month_Average, mnum --Joins with county to get county names and orders data
+            FROM (
+                    SELECT countyFIPS, year, month, AVG(heat_value) as Month_Average, mnum --Calculates monthly averages
+                    FROM (  SELECT t.*, EXTRACT(YEAR FROM HI_Date) as year, TO_CHAR(HI_Date, 'Month') as month, TO_CHAR(HI_Date, 'mm') as mnum --Extracts year and month
+                            FROM rc4.Heat_Index t
+                            )
+                    GROUP BY countyFIPS, year, month, mnum
+                    )
+                NATURAL JOIN
+                    rc4.County
+        """
+
+        dbQuery = dbQuery + whereClause + orderByClause + ")"
+
+        cursor = connection.cursor()
+
+        data = cursor.execute(dbQuery) # Cursor.execute returns an iterator that contains the results of the query
+
+        x = []
+        y = []
+
+        for row in data:
+            x.append( row[2] + str( row[1] ) )
+            y.append( row[3] )
+
+        plt.clf()
+        plt.plot(x, y)
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.xticks(rotation='vertical', fontsize=3)
+        
+
+        buf = BytesIO()
+        plt.savefig(buf, format="png")
+
+        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+
+        imgSrc = f"src=data:image/png;base64,{data}"
+
+        return render_template('graph.html', imgSrc=imgSrc)
 
 @app.route('/join')
 def join():
