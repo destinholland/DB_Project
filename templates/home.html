@@ -1,4 +1,54 @@
 {% extends "homeBase.html" %}
-{% block TopRightIcon %}<li><a id="tr_icon" href="{{ url_for('register') }}">Account</a></li>{% endblock %}
+{% block TopRightIcon %}<li><a href="{{ url_for('home') }}"><i class="fas fa-home" aria-hidden="true"></i></a></li>{% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+    <div class="home-content">
+        <div class="content-section">
+            <h1>Introduction</h1>
+            <p>Please use this resource to answer several interesting climate-change related questions specific to the state of Florida.</p>
+            <h1>Query Explanations</h1>
+            <ul>
+                  <li>
+                      <i id=home_fa class="fas fa-temperature-high" aria-hidden="true"></i>
+                      <span>
+                          How has the monthly average temperature changed in Florida through various time intervals from
+                          1979 to 2016? Is there a trend that can be recognized?
+                      </span>
+                  </li>
+
+                  <li>
+                      <i id=home_fa class="fas fa-head-side-mask" aria-hidden="true"></i>
+                      <span>
+                          Has the number of illnesses per square mile increased over time in Florida counties?
+                          Does this correlate with temperature changes?
+                      </span>
+                  </li>
+
+                  <li>
+                      <i id=home_fa class="fas fa-fire" aria-hidden="true"></i>
+                      <span>
+                          How many weeks in each month have an average temperature greater than 85 degrees Fahrenheit in
+                          a given county? How have the monthly values changed over time?
+                      </span>
+                  </li>
+
+                  <li>
+                      <i id=home_fa class="fas fa-frown" aria-hidden="true"></i>
+                      <span>
+                          Has the correlation between heat index temperatures and heat-related stress and vulnerability
+                          incidents remained constant?
+                      </span>
+                  </li>
+
+                  <li>
+                      <i id=home_fa class="fas fa-umbrella-beach" aria-hidden="true"></i>
+                      <span>
+                          Have the summers been getting longer in Florida over the years?
+                      </span>
+                  </li>
+              </ul>
+        </div>
+    </div>
+
+
+{% endblock %}
