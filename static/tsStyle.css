@@ -15,6 +15,12 @@ html
 }
 
 
+h1
+{
+    color: #005F60;
+}
+
+
 body
 {
     height: 100%;
@@ -100,7 +106,7 @@ nav ul li a
 .sidebar
 {
     position: fixed;
-    top: 20%;
+    top: 15%;
     /*height: 35%;*/
     width: 8%;
 }
@@ -143,16 +149,33 @@ nav ul li a
 }
 
 
-.fa-plus-circle:hover, .fa-handshake-o:hover, .fa-table:hover, .fa-sign-out:hover
+.fas:hover
 {
     /*color: #FBAED2;*/
-    color: lightcoral;
+    color: #FD5901;
 }
 
 
-.fa-plus-circle, .fa-handshake-o, .fa-table, .fa-sign-out
+.fas
 {
     color: papayawhip;
+}
+
+.fa-home:hover
+{
+    color: #005F60;
+}
+
+#home_fa
+{
+    color: #FD5901;
+    padding: 15px;
+}
+
+#home_icon
+{
+    width: fit-content;
+    height: fit-content;
 }
 
 
@@ -175,17 +198,41 @@ nav ul li a
 }
 
 
-.login-content
+.q1-content
 {
-    border: 2px solid papayawhip;
+    border: 2px solid #FD5901;
     padding: 5px;
     border-radius: 25px;
-    background: lightcoral;
+    background: papayawhip;
     position: absolute;
     width: 50%;
     margin-top: 15%;
     margin-left: 0;
 }
+
+
+.home-content
+{
+    border: 2px solid #FD5901;
+    padding: 25px;
+    border-radius: 25px;
+    background: papayawhip;
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 15%;
+    margin-left: 0;
+}
+
+/*.content-section*/
+/*{*/
+/*    background: crimson;*/
+/*    position: absolute;*/
+/*    width:fit-content;*/
+/*    height:fit-content;*/
+/*    left: 0;*/
+/*    top: 50%;*/
+/*}*/
 
 
 .register-content
@@ -203,7 +250,7 @@ nav ul li a
 
 .form-control-label
 {
-    color: papayawhip;
+    color: #005F60;
     text-align: center;
 }
 

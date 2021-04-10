@@ -1,14 +1,17 @@
+from time import strftime
+
 from flask import Flask, render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm, TableForm
+from forms import RegistrationForm, LoginForm, QueryOneForm
 from flask_bootstrap import Bootstrap
 from datetime import datetime
 import cx_Oracle
-from DBconnection import connection
+# from DBconnection import connection
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
+import graphs
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -80,7 +83,7 @@ def graph1():
         plt.xlabel('X')
         plt.ylabel('Y')
         plt.xticks(rotation='vertical', fontsize=3)
-        
+
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
@@ -102,58 +105,29 @@ def choose():
     return render_template('choose.html', title='choose', formdate=form_date)
 
 
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('home.html', title='home')
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        if form.username.data == 'destinholland' and form.password.data == '1234':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Login failed. Please check username and password and try again.', 'danger')
-    return render_template('login.html', title='Login', form=form)
+@app.route('/queryone', methods=['GET', 'POST'])
+def queryOne():
+    form = QueryOneForm(request.form)
+    if form.validate():
+        counties = ', '.join(form.counties.data)
+        counties = '(' + counties + ')'
+        print(counties)
+
+        start_date = form.dStart.data.strftime('%m/%Y')
+        print(start_date)
+
+        end_date = form.dEnd.data.strftime('%m/%Y')
+        print(end_date)
 
 
-@app.route('/', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        flash(f'Account was created.', 'success')
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+        return redirect(url_for('graph1'))
+    return render_template('QueryOne.html', title='Query One', form=form)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-#
-# admins = db.Table('admins',
-#                   db.Column('book_id', db.Integer, db.ForeignKey('book_id'), primary_key=True),
-#                   db.Column('user_id', db.Integer, db.ForeignKey('user_id'), primary_key=True)
-# )
-#
-#
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.String(5))
-#     username = db.Column(db.String(20), unique=True, nullable=False)
-#     password = db.Column(db.String(60), nullable=False)
-#     # tables = db.relationship('Table', backref='user', lazy=True)
-#
-#     def __repr__(self):
-#         return f"User('{ self.user_id }', '{ self.username }', '{ self.id }')"
-#
-#
-# class Table(db.Model):
-#     table_id = db.Column(db.Integer, primary_key=True)
-#     table_name = db.Column(db.String(20), nullable=False)
-#     members = db.Column(db.String(60), nullable=False)
-#     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-#
-#     def __repr__(self):
-#         return f"Table('{ self.table_id }', '{ self.username }')"

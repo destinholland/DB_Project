@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Query 1</title>
-</head>
-<body>
-    <div>
-        <img {{ imgSrc }} alt="Heat Index Graph" >
+{% extends "homeBase.html" %}
+{% block TopRightIcon %}<li><a href="{{ url_for('home') }}"><i class="fas fa-home" aria-hidden="true"></i></a></li>{% endblock %}
+
+{% block content %}
+    <div class="home-content">
+        <div class="content-section">
+            <img {{ imgSrc }} alt="Heat Index Graph" >
+        </div>
     </div>
-</body>
-</html>
+{% endblock %}
+
