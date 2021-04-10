@@ -89,7 +89,7 @@ def graph1():
 
         imgSrc = f"src=data:image/png;base64,{data}"
 
-        return render_template('graph.html', imgSrc=imgSrc)
+        return render_template('homeBase.html', imgSrc=imgSrc)
 
 @app.route('/join')
 def join():

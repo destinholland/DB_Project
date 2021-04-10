@@ -31,7 +31,7 @@
                   <li><a href="{{ url_for('login') }}"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
               </ul>
             </div>
-            <div class="col-11" style="position:fixed; top:20%; margin-left:200px">
+            <div class="col-5" style="position:fixed; top:20%; margin-left:200px;">
                 <form action="graph1" method="POST" >
                     <label for="counties">Select a county:</label>
 
@@ -115,6 +115,9 @@
                     <br>
                     <input type="submit" value="Submit">
                 </form>
+            </div>
+            <div class="col-6" style="position: fixed; top: 20%; margin-left: 600px;">
+                <img {{ imgSrc }} >
             </div>
             <!-- <div class="col-11 page-content">
                 {% with messages = get_flashed_messages(with_categories=true) %}
