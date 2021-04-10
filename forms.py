@@ -91,3 +91,5 @@ class QueryOneForm(FlaskForm):
     dStart = DateField('Date Start', format='%Y-%m-%d')
     dEnd = DateField('Date End', format='%Y-%m-%d')
     submit = SubmitField('Submit')
+
+# TODO put constraints on the date start and end date
