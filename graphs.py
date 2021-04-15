@@ -53,10 +53,9 @@ def GraphOne(counties, start, end, connection):
         ) 
 
         buf = BytesIO()
+        plt.savefig("static/graph.png")
         plt.savefig(buf, format="png")
-
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
-
         imgSrc = f"src=data:image/png;base64,{data}"
 
         return imgSrc

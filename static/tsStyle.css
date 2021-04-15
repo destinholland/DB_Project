@@ -45,34 +45,36 @@ body
 label.logo, .logo
 {
     /*color: #490F4A;*/
+    margin-left: 0;
     color: papayawhip;
-    font-size: 35px;
-    line-height: 80px;
+    font-size: 80px;
     padding: 0 100px;
     font-weight: bold;
 }
 
-nav ul
+nav a
 {
-    float: right;
-    margin-right: 20px;
+    color: papayawhip;
+    font-size: 80px;
+    padding: 0 100px;
+    font-weight: bold;
 }
 
-nav ul li
-{
-    display: inline-block;
-    line-height: 80px;
-    margin: 0 10px;
-}
+/*nav ul li*/
+/*{*/
+/*    display: inline-block;*/
+/*    line-height: 80px;*/
+/*    margin: 0 10px;*/
+/*}*/
 
-nav ul li a
-{
-    color: white;
-    font-size: 17px;
-    padding: 7px 13px;
-    border-radius: 3px;
-    text-transform: uppercase;
-}
+/*nav ul li a*/
+/*{*/
+/*    color: white;*/
+/*    font-size: 17px;*/
+/*    padding: 7px 13px;*/
+/*    border-radius: 3px;*/
+/*    text-transform: uppercase;*/
+/*}*/
 
 
 #tr_icon
@@ -198,14 +200,15 @@ nav ul li a
 }
 
 
-.q1-content
+.q-content
 {
     border: 2px solid #FD5901;
-    padding: 5px;
+    padding: 25px;
     border-radius: 25px;
     background: papayawhip;
     position: absolute;
-    width: 50%;
+    width: fit-content;
+    height: fit-content;
     margin-top: 15%;
     margin-left: 0;
 }
@@ -258,4 +261,28 @@ nav ul li a
 .page-content
 {
     margin-left: 10%;
+    border-radius:10px;
+    padding: 5px;
+}
+
+.query
+{
+    margin-left: 15%;
+    margin-top: -5%;
+    position: fixed;
+    /*height: 35%;*/
+}
+
+.graph
+{
+    margin-top: -5%;
+    margin-left: 40%;
+    position: fixed;
+    /*height: 35%;*/
+}
+
+.homebutton
+{
+    margin-left: 90%;
+    position: fixed;
 }

@@ -1,5 +1,5 @@
 from time import strftime
-
+import os
 from flask import Flask, render_template, url_for, flash, redirect, request
 from forms import RegistrationForm, LoginForm, QueryOneForm
 from flask_bootstrap import Bootstrap
@@ -12,6 +12,8 @@ app = Flask(__name__)
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Bootstrap(app)
 app.config['SECRET_KEY'] = '29b0ade026c5f7a2e831f73a73be8169'
+
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 #
 # db = SQLAlchemy(app)
@@ -26,28 +28,6 @@ def account():
 def add():
     return render_template("homeBase.html")
 
-@app.route('/graph1', methods=[ 'GET', 'POST' ])
-def graph1():
-
-    if request.method == 'GET':
-        return f"Invalid GET request"
-
-    if request.method == 'POST':
-
-        imgSrc = GraphOne(request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
-
-        return render_template('graph.html', imgSrc=imgSrc)
-
-@app.route('/join')
-def join():
-    return render_template('homeBase.html')
-
-
-@app.route('/choose')
-def choose():
-    form_date = TableForm()
-    return render_template('choose.html', title='choose', formdate=form_date)
-
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -56,7 +36,11 @@ def home():
 
 @app.route('/queryone', methods=['GET', 'POST'])
 def queryOne():
+    if os.path.exists("static/graph.png"):
+        os.remove("static/graph.png")
+
     form = QueryOneForm(request.form)
+
     if form.validate():
         counties = ', '.join(form.counties.data)
         counties = '(' + counties + ')'
@@ -68,8 +52,8 @@ def queryOne():
         end_date = form.dEnd.data.strftime('%m/%Y')
         print(end_date)
 
+        GraphOne(request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
 
-        return redirect(url_for('graph1'))
     return render_template('QueryOne.html', title='Query One', form=form)
 
 

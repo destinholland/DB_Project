@@ -1,10 +1,10 @@
-{% extends "homeBase.html" %}
-{% block TopRightIcon %}<a href="{{ url_for('home') }}"><i id="home_icon" class="fas fa-home" aria-hidden="true"></i></a>{% endblock %}
+{% extends "queryBase.html" %}
+{#{% block TopRightIcon %}<a href="{{ url_for('home') }}"><i id="home_icon" class="fas fa-home" aria-hidden="true"></i></a>{% endblock %}#}
 
 {% block content %}
-    <div class="q1-content">
+    <div class="q-content">
         <div class="content-section">
-            <form method="POST" action="/graph1">
+            <form method="POST" action="/queryone">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
 
@@ -36,6 +36,12 @@
             </form>
         </div>
     </div>
+{% endblock %}
 
-
+{% block content2 %}
+    <div class="q-content">
+        <div class="content-section">
+            <img src="static/graph.png" onerror="this.onerror=null; this.src='static/defaultgraph.png'" alt="Graph Picture">
+        </div>
+    </div>
 {% endblock %}
