@@ -1,5 +1,4 @@
 from time import strftime
-import os
 from flask import Flask, render_template, url_for, flash, redirect, request
 from forms import RegistrationForm, LoginForm, QueryOneForm
 from flask_bootstrap import Bootstrap
@@ -36,8 +35,6 @@ def home():
 
 @app.route('/queryone', methods=['GET', 'POST'])
 def queryOne():
-    if os.path.exists("static/graph.png"):
-        os.remove("static/graph.png")
 
     form = QueryOneForm(request.form)
 
@@ -52,9 +49,14 @@ def queryOne():
         end_date = form.dEnd.data.strftime('%m/%Y')
         print(end_date)
 
-        GraphOne(request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
 
-    return render_template('QueryOne.html', title='Query One', form=form)
+    if request.method == 'POST':
+        imgSrc = GraphOne(request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
+        return render_template('QueryOne.html', title='Query One', form=form, imgSrc=imgSrc)
+
+
+    imgSrc = "src=static/defaultgraph.png"
+    return render_template('QueryOne.html', title='Query One', form=form, imgSrc=imgSrc)
 
 
 if __name__ == '__main__':
