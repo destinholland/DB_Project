@@ -1,11 +1,11 @@
 from time import strftime
 from flask import Flask, render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm, QueryOneForm
+from forms import RegistrationForm, LoginForm, QueryOneForm, QueryThreeForm
 from flask_bootstrap import Bootstrap
 from datetime import datetime
 import cx_Oracle
 from DBconnection import connection
-from graphs import GraphOne
+from graphs import GraphOne, GraphThree
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -38,7 +38,7 @@ def queryOne():
 
     form = QueryOneForm(request.form)
 
-    if form.validate():
+    """ if form.validate():
         counties = ', '.join(form.counties.data)
         counties = '(' + counties + ')'
         print(counties)
@@ -47,10 +47,10 @@ def queryOne():
         print(start_date)
 
         end_date = form.dEnd.data.strftime('%m/%Y')
-        print(end_date)
+        print(end_date) """
 
 
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate():
         imgSrc = GraphOne(request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
         return render_template('QueryOne.html', title='Query One', form=form, imgSrc=imgSrc)
 
@@ -58,6 +58,30 @@ def queryOne():
     imgSrc = "src=static/defaultgraph.png"
     return render_template('QueryOne.html', title='Query One', form=form, imgSrc=imgSrc)
 
+@app.route('/querythree', methods=['GET', 'POST'])
+def queryThree():
+
+    form = QueryThreeForm(request.form)
+
+    """ if form.validate():
+        counties = ', '.join(form.counties.data)
+        counties = '(' + counties + ')'
+        print(counties)
+
+        start_date = form.dStart.data.strftime('%m/%Y')
+        print(start_date)
+
+        end_date = form.dEnd.data.strftime('%m/%Y')
+        print(end_date) """
+
+
+    if request.method == 'POST' and form.validate():
+        imgSrc = GraphThree(request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], request.form["threshold"], connection)
+        return render_template('QueryThree.html', title='Query Three', form=form, imgSrc=imgSrc)
+
+
+    imgSrc = "src=static/defaultgraph.png"
+    return render_template('QueryThree.html', title='Query Three', form=form, imgSrc=imgSrc)
 
 if __name__ == '__main__':
     app.run(debug=True)
