@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, SelectMultipleField, DecimalField, validators
 from wtforms.validators import DataRequired, Length, Email, EqualTo
-from wtforms.fields.html5 import DateField
+from wtforms.fields.html5 import DateField, IntegerField
 
 
 class RegistrationForm(FlaskForm):
@@ -238,6 +238,6 @@ class QueryFourForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
+    dStart = IntegerField('Start Year (optional)', [validators.optional(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")])
+    dEnd = IntegerField('End Year (optional)', [validators.optional(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")])
     submit = SubmitField('Submit')
