@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, SelectMultipleField, DecimalField, validators
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from wtforms.fields.html5 import DateField, IntegerField
+import datetime
 
 
 class RegistrationForm(FlaskForm):
@@ -91,63 +92,63 @@ class QueryOneForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
+    dStart = DateField('Date Start', [validators.required()], format='%Y-%m-%d', default=datetime.date(1979, 5, 1))
+    dEnd = DateField('Date End', [validators.required()], format='%Y-%m-%d', default=datetime.date(2016, 9, 1))
     submit = SubmitField('Submit')
 
 # TODO put constraints on the date start and end date
 class QueryTwoForm(FlaskForm):
     county = SelectField('County', [validators.required()], choices = [
-        ('001', 'Alachua'),
-        ('003', 'Baker'),
-        ('005', 'Bay'),
-        ('007', 'Bradford'),
-        ('009', 'Brevard'),
-        ('011', 'Broward'),
-        ('013', 'Calhoun'),
-        ('015', 'Charlotte'),
-        ('017', 'Citrus'),
-        ('019', 'Clay'),
-        ('021', 'Collier'),
-        ('023', 'Columbia'),
-        ('027', 'De Soto'),
-        ('029', 'Dixie'),
-        ('031', 'Duval'),
-        ('033', 'Escambia'),
-        ('035', 'Flagler'),
-        ('037', 'Franklin'),
-        ('039', 'Gadsden'),
-        ('041', 'Gilchrist'),
-        ('043', 'Glades'),
-        ('045', 'Gulf'),
-        ('047', 'Hamilton'),
-        ('049', 'Hardee'),
-        ('051', 'Hendry'),
-        ('053', 'Hernando'),
-        ('055', 'Highlands'),
-        ('057', 'Hillsborough'),
-        ('059', 'Holmes'),
-        ('061', 'Indian River'),
-        ('063', 'Jackson'),
-        ('065', 'Jefferson'),
-        ('067', 'Lafayette'),
-        ('069', 'Lake'),
-        ('071', 'Lee'),
-        ('073', 'Leon'),
-        ('075', 'Levy'),
-        ('077', 'Liberty'),
-        ('079', 'Madison'),
-        ('081', 'Manatee'),
-        ('083', 'Marion'),
-        ('085', 'Martin'),
-        ('086', 'Miami-Dade'),
-        ('087', 'Monroe'),
-        ('089', 'Nassau'),
-        ('091', 'Okaloosa'),
-        ('093', 'Okeechobee'),
-        ('095', 'Orange'),
-        ('097', 'Osceola'),
-        ('099', 'Palm Beach'),
+        ('1', 'Alachua'),
+        ('3', 'Baker'),
+        ('5', 'Bay'),
+        ('7', 'Bradford'),
+        ('9', 'Brevard'),
+        ('11', 'Broward'),
+        ('13', 'Calhoun'),
+        ('15', 'Charlotte'),
+        ('17', 'Citrus'),
+        ('19', 'Clay'),
+        ('21', 'Collier'),
+        ('23', 'Columbia'),
+        ('27', 'De Soto'),
+        ('29', 'Dixie'),
+        ('31', 'Duval'),
+        ('33', 'Escambia'),
+        ('35', 'Flagler'),
+        ('37', 'Franklin'),
+        ('39', 'Gadsden'),
+        ('41', 'Gilchrist'),
+        ('43', 'Glades'),
+        ('45', 'Gulf'),
+        ('47', 'Hamilton'),
+        ('49', 'Hardee'),
+        ('51', 'Hendry'),
+        ('53', 'Hernando'),
+        ('55', 'Highlands'),
+        ('57', 'Hillsborough'),
+        ('59', 'Holmes'),
+        ('61', 'Indian River'),
+        ('63', 'Jackson'),
+        ('65', 'Jefferson'),
+        ('67', 'Lafayette'),
+        ('69', 'Lake'),
+        ('71', 'Lee'),
+        ('73', 'Leon'),
+        ('75', 'Levy'),
+        ('77', 'Liberty'),
+        ('79', 'Madison'),
+        ('81', 'Manatee'),
+        ('83', 'Marion'),
+        ('85', 'Martin'),
+        ('86', 'Miami-Dade'),
+        ('87', 'Monroe'),
+        ('89', 'Nassau'),
+        ('91', 'Okaloosa'),
+        ('93', 'Okeechobee'),
+        ('95', 'Orange'),
+        ('97', 'Osceola'),
+        ('99', 'Palm Beach'),
         ('101', 'Pasco'),
         ('103', 'Pinellas'),
         ('105', 'Polk'),
@@ -173,8 +174,8 @@ class QueryTwoForm(FlaskForm):
         ('5', 'Hispanic All Races'),
         ('6', 'All Non-White Races including Hispanic'),
         ('7', 'Other including Hispanic')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
+    dStart = IntegerField('Start Year', [validators.required(), validators.NumberRange(min=1996, max=2017, message="Please input a value between %(min)s and %(max)s")], default=1996)
+    dEnd = IntegerField('End Year', [validators.required(), validators.NumberRange(min=1997, max=2018, message="Please input a value between %(min)s and %(max)s")], default=2018)
     submit = SubmitField('Submit')
 
 class QueryThreeForm(FlaskForm):
@@ -246,9 +247,9 @@ class QueryThreeForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
-    threshold = DecimalField('Heat Value Threshold (optional)', [validators.optional()])
+    dStart = DateField('Date Start', [validators.required()], format='%Y-%m-%d', default=datetime.date(1979, 5, 1))
+    dEnd = DateField('Date End', [validators.required()], format='%Y-%m-%d', default=datetime.date(2016, 9, 1))
+    threshold = DecimalField('Heat Value Threshold', [validators.required()], default=85.0)
     submit = SubmitField('Submit')
 
 class QueryFourForm(FlaskForm):
@@ -320,8 +321,8 @@ class QueryFourForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = IntegerField('Start Year (optional)', [validators.optional(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")])
-    dEnd = IntegerField('End Year (optional)', [validators.optional(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")])
+    dStart = IntegerField('Start Year', [validators.required(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")], default=2005)
+    dEnd = IntegerField('End Year', [validators.required(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")], default=2016)
     submit = SubmitField('Submit')
 
 
@@ -395,7 +396,7 @@ class QueryFiveForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
-    stdev = IntegerField('Number of Standard Deviation', [validators.optional()])
+    dStart = IntegerField('Start Year', [validators.required(), validators.NumberRange(min=1979, max=2016, message="Please input a value between %(min)s and %(max)s")], default=1979)
+    dEnd = IntegerField('End Year', [validators.required(), validators.NumberRange(min=1979, max=2016, message="Please input a value between %(min)s and %(max)s")], default=2016)
+    stdev = IntegerField('Number of Standard Deviations', [validators.required(), validators.NumberRange(min=1, max=10, message="Please input a value between %(min)s and %(max)s")], default=1)
     submit = SubmitField('Submit')

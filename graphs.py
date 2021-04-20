@@ -51,13 +51,13 @@ def GraphOne(counties, start, end, connection):
                 
                 plt.plot(x, y, marker='o')
 
-        plt.legend(legend)
-        plt.xlabel('Month')
+        plt.legend(labels=legend, fancybox=True, shadow=True)
+        plt.xlabel('Month/Year')
         plt.ylabel('Average Monthly Heat Index')
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 labelbottom=False  # labels along the bottom edge are off
-        ) 
+        )
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
@@ -69,78 +69,96 @@ def GraphOne(counties, start, end, connection):
 
 def GraphTwo(county, ethnicities, start, end, connection):
 
-        outerWhereClause = f"WHERE countyFIPS == {county}"
-
-        ethnicities = str(ethnicities).replace('[', '').replace(']', '').replace("'", '')
-        outerWhereClause = outerWhereClause + f" AND (eID IN ({ethnicities})"
-
-        if start != '':
-                outerWhereClause = outerWhereClause + f" AND (year >= {str(start)[0:4]})"
-
-        if end != '':
-                outerWhereClause = outerWhereClause + f" AND (year <= {str(end)[0:4]})"
-
-        print(outerWhereClause)
-        dbQuery = """
-                SELECT d1.countyFIPS, startYear, endYear, eID, name AS ethnicity, percentChange --Joins with Ethnicity table to get the full names of the ethnicities
-                FROM(
-                    SELECT d1.countyFIPS, d1.year AS startYear, d2.year AS endYear, d1.ethnicity, (d2.ethnicPercent - d1.ethnicPercent) AS percentChange --Joins the two tables and calculates the difference(change) in ethnic percentage
-                    FROM
-                        (
-                        SELECT countyFIPS, year, ethnicity, (ethnicPop / totalPop) AS ethnicPercent --Calculates the percentage of total population for each ethnicity
-                        FROM(
-                            SELECT countyFIPS, demo_year AS year, ethnicity, SUM(population) as ethnicPop --Gets the population for each ethnicity for each county by year
-                            FROM Demographic
-                            GROUP BY countyFIPS, demo_year, ethnicity
-                            )
-                        NATURAL JOIN(
-                            SELECT countyFIPS, demo_year AS year, SUM(population) AS totalPop --Gets the total population for each county by year
-                            FROM Demographic
-                            GROUP BY countyFIPS, demo_year
-                            )
-                        ) d1
-                    JOIN
-                        (
-                        SELECT countyFIPS, year, ethnicity, (ethnicPop / totalPop) AS ethnicPercent --Calculates the percentage of total population for each ethnicity
-                        FROM(
-                            SELECT countyFIPS, demo_year AS year, ethnicity, SUM(population) as ethnicPop --Gets the population for each ethnicity for each county by year
-                            FROM Demographic
-                            GROUP BY countyFIPS, demo_year, ethnicity
-                            )
-                        NATURAL JOIN(
-                            SELECT countyFIPS, demo_year AS year, SUM(population) AS totalPop --Gets the total population for each county by year
-                            FROM Demographic
-                            GROUP BY countyFIPS, demo_year
-                            )
-                        ) d2
-                    ON (d1.countyFIPS = d2.countyFIPS) AND (d2.year = (d1.year + 1)) AND (d1.ethnicity = d2.ethnicity)
-                    )
-                JOIN
-                    Ethnicity
-                ON ethnicity = ethnicity.eid
-                %s;
-                --ORDER BY countyFIPS ASC, startYear ASC, eID ASC; For some reason, trying to order causes it to process forever(table probably too large)
-                        """ % (outerWhereClause)
-
-        cursor = connection.cursor()
-
-        data = cursor.execute(dbQuery)  # Cursor.execute returns an iterator that contains the results of the query
-
-        x = []
-        y = []
-
-        for row in data:
-                print(row)
-                # x.append(row[2] + str(row[1]))
-                # y.append(row[3])
-
         plt.clf()
-        plt.plot(x, y)
-        plt.xlabel('X')
-        plt.ylabel('Y')
+
+        legend = []
+
+        for ethnicity in ethnicities:
+                ethnicName = ''
+                ethnicCode = [
+                ('1', 'White including Hispanic'),
+                ('2', 'Black including Hispanic'),
+                ('3', 'Asian/Pacific Islander including Hispanic'),
+                ('4', 'American Indian/Alaskan Native including Hispanic'),
+                ('5', 'Hispanic All Races'),
+                ('6', 'All Non-White Races including Hispanic'),
+                ('7', 'Other including Hispanic')]
+                for code in ethnicCode:
+                        if str(ethnicity) == code[0]:
+                                ethnicName = code[1]
+
+                legend.append(ethnicName)
+                outerWhereClause = f"WHERE countyFIPS = " + str(county)
+
+                # ethnicities2 = str(ethnicities).replace('[', '').replace(']', '').replace("'", '')
+                outerWhereClause = outerWhereClause + f" AND (eID = {ethnicity})"
+
+                if start != '':
+                        outerWhereClause = outerWhereClause + f" AND (startYear >= {str(start)[0:4]})"
+
+                if end != '':
+                        outerWhereClause = outerWhereClause + f" AND (endYear <= {str(end)[0:4]})"
+
+                dbQuery = """
+                        SELECT countyFIPS, startYear, endYear, eID, name AS ethnicity, percentChange --Joins with Ethnicity table to get the full names of the ethnicities
+                        FROM(
+                            SELECT d1.countyFIPS, d1.year AS startYear, d2.year AS endYear, d1.ethnicity, (d2.ethnicPercent - d1.ethnicPercent) AS percentChange --Joins the two tables and calculates the difference(change) in ethnic percentage
+                            FROM
+                                (
+                                SELECT countyFIPS, year, ethnicity, (ethnicPop / totalPop) AS ethnicPercent --Calculates the percentage of total population for each ethnicity
+                                FROM(
+                                    SELECT countyFIPS, demo_year AS year, ethnicity, SUM(population) as ethnicPop --Gets the population for each ethnicity for each county by year
+                                    FROM rc4.Demographic
+                                    GROUP BY countyFIPS, demo_year, ethnicity
+                                    )
+                                NATURAL JOIN(
+                                    SELECT countyFIPS, demo_year AS year, SUM(population) AS totalPop --Gets the total population for each county by year
+                                    FROM rc4.Demographic
+                                    GROUP BY countyFIPS, demo_year
+                                    )
+                                ) d1
+                            JOIN
+                                (
+                                SELECT countyFIPS, year, ethnicity, (ethnicPop / totalPop) AS ethnicPercent --Calculates the percentage of total population for each ethnicity
+                                FROM(
+                                    SELECT countyFIPS, demo_year AS year, ethnicity, SUM(population) as ethnicPop --Gets the population for each ethnicity for each county by year
+                                    FROM rc4.Demographic
+                                    GROUP BY countyFIPS, demo_year, ethnicity
+                                    )
+                                NATURAL JOIN(
+                                    SELECT countyFIPS, demo_year AS year, SUM(population) AS totalPop --Gets the total population for each county by year
+                                    FROM rc4.Demographic
+                                    GROUP BY countyFIPS, demo_year
+                                    )
+                                ) d2
+                            ON (d1.countyFIPS = d2.countyFIPS) AND (d2.year = (d1.year + 1)) AND (d1.ethnicity = d2.ethnicity)
+                            )
+                        JOIN
+                            rc4.Ethnicity
+                        ON ethnicity = ethnicity.eid
+                        %s
+                        ORDER BY countyFIPS ASC, startYear ASC, eID ASC --For some reason, trying to order causes it to process forever(table probably too large)
+                                """ % (outerWhereClause)
+
+                cursor = connection.cursor()
+
+                data = cursor.execute(dbQuery)  # Cursor.execute returns an iterator that contains the results of the query
+
+                x = []
+                y = []
+
+                for row in data:
+                        x.append(row[2])
+                        y.append(row[5])
+
+                plt.plot(x, y)
+
+        plt.xlabel('Year')
+        plt.ylabel('Percent Ethnicity Change')
+        plt.legend(labels=legend, loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=1, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
-                labelbottom=False  # labels along the bottom edge are off
+                #labelbottom=False  # labels along the bottom edge are off
         )
 
         buf = BytesIO()
@@ -157,7 +175,7 @@ def GraphThree(counties, start, end, threshold, connection):
 
         for county in counties:
                 legend.append(str(county))
-                whereClause = f"WHERE name = \'" + str(county) + '\''
+                outerWhereClause = f"WHERE name = \'" + str(county) + '\''
                 #outerWhereClause = f"WHERE name IN ({str(counties).replace('[', '').replace(']','')})"
 
                 if start != '':
@@ -185,7 +203,7 @@ def GraphThree(counties, start, end, threshold, connection):
                         ORDER BY countyFIPS ASC, year ASC, mnum ASC
                         )
                 %s
-                """ % (heatThreshold, whereClause)
+                """ % (heatThreshold, outerWhereClause)
 
                 cursor = connection.cursor()
 
@@ -200,9 +218,11 @@ def GraphThree(counties, start, end, threshold, connection):
 
                 plt.plot(x, y)
 
-        plt.xlabel('X')
-        plt.ylabel('Y')
-        plt.legend(legend)
+        plt.xlabel('Month/Year')
+        plt.ylabel('Number of days above Threshold')
+        title = 'Number of days above ' + threshold + '℉ per month'
+        plt.title(title)
+        plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 labelbottom=False  # labels along the bottom edge are off
@@ -222,13 +242,13 @@ def GraphFour(counties, start, end, connection):
         for county in counties:
                 legend.append(str(county))
 
-                whereClause = f"WHERE name = \'" + str(county) + '\''
+                outerWhereClause = f"WHERE name = \'" + str(county) + '\''
 
                 if start != '':
-                        whereClause = whereClause + f" AND (year >= {str(start)[0:4]})"
+                        outerWhereClause = outerWhereClause + f" AND (year >= {str(start)[0:4]})"
 
                 if end != '':
-                        whereClause = whereClause + f" AND (year <= {str(end)[0:4]})"
+                        outerWhereClause = outerWhereClause + f" AND (year <= {str(end)[0:4]})"
 
                 dbQuery = """
                 SELECT countyFIPS, name, year, (sum_AB / SQRT(sum_a2 * sum_b2)) AS correlation_coefficient  --Computes correlation for each year
@@ -284,7 +304,7 @@ def GraphFour(counties, start, end, connection):
                         rc4.County
                 %s
                 ORDER BY countyFIPS ASC, year ASC
-                """ % (whereClause)
+                """ % (outerWhereClause)
 
                 cursor = connection.cursor()
 
@@ -302,11 +322,11 @@ def GraphFour(counties, start, end, connection):
 
         plt.xlabel('Year')
         plt.ylabel('Correlation Coefficient')
-        plt.legend(legend)
+        plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 #labelbottom=False  # labels along the bottom edge are off
-        ) 
+        )
         buf = BytesIO()
         plt.savefig(buf, format="png")
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
@@ -316,54 +336,62 @@ def GraphFour(counties, start, end, connection):
 
 
 def GraphFive(stdev, counties, start, end, connection):
-        outerWhereClause = f"AND name IN ({str(counties).replace('[', '').replace(']','')})"   
-        numstdev = 1
-
-        if stdev != '':
-                numstdev = stdev
-
-        if start != '':
-                outerWhereClause = outerWhereClause + f" AND (year <= {str(start)[0:4]})"
-        if end != '':
-                outerWhereClause = outerWhereClause + f" AND (year <= {str(end)[0:4]})"
-        
-
-        dbQuery = """
-        SELECT rc4.Heat_Index.countyFIPS, name, year, COUNT(*) as numHotDays --Counts the number of days hotter than the lower bound (x SDs away from mean) and orders
-        FROM 
-                (SELECT countyFIPS, name, year, (AVG(heat_value) - %s * STDDEV(heat_value)) as lowerBoundSummer --Calculates x Standard Deviations away from the year's summer mean heat value (lower bound only)
-                FROM (  SELECT t.*, rc4.county.name, EXTRACT(YEAR FROM HI_Date) as year --Extracts year for grouping
-                        FROM rc4.Heat_Index t, rc4.county
-                        WHERE t.countyFIPS = rc4.county.countyFIPS
-                        )
-                GROUP BY name, countyFIPS, year
-                ) summerStats
-        JOIN
-                rc4.Heat_Index ON rc4.Heat_Index.countyFIPS = summerStats.countyFIPS
-                                AND TO_CHAR(rc4.Heat_Index.HI_Date, 'YYYY') = summerStats.year
-        WHERE heat_value >= lowerBoundSummer %s
-        GROUP BY rc4.Heat_Index.countyFIPS, name, year
-        ORDER BY rc4.Heat_Index.countyFIPS ASC, year ASC
-        """ % (numstdev, outerWhereClause)
-
-        cursor = connection.cursor()
-
-        data = cursor.execute(dbQuery)  # Cursor.execute returns an iterator that contains the results of the query
-
-        x = []
-        y = []
-
-        for row in data:
-            x.append(row[2])
-            y.append(row[3])
-
         plt.clf()
-        plt.plot(x, y)
+        legend = []
+
+        for county in counties:
+                legend.append(str(county))
+
+                outerWhereClause = f"WHERE heat_value >= lowerBoundSummer AND name = \'" + str(county) + '\''
+                #outerWhereClause = f"AND name IN ({str(counties).replace('[', '').replace(']','')})"   
+                numstdev = 1
+
+                if stdev != '':
+                        numstdev = stdev
+
+                if start != '':
+                        outerWhereClause = outerWhereClause + f" AND (year >= {str(start)[0:4]})"
+                if end != '':
+                        outerWhereClause = outerWhereClause + f" AND (year <= {str(end)[0:4]})"
+                
+
+                dbQuery = """
+                SELECT rc4.Heat_Index.countyFIPS, name, year, COUNT(*) as numHotDays --Counts the number of days hotter than the lower bound (x SDs away from mean) and orders
+                FROM 
+                        (SELECT countyFIPS, name, year, (AVG(heat_value) - %s * STDDEV(heat_value)) as lowerBoundSummer --Calculates x Standard Deviations away from the year's summer mean heat value (lower bound only)
+                        FROM (  SELECT t.*, rc4.county.name, EXTRACT(YEAR FROM HI_Date) as year --Extracts year for grouping
+                                FROM rc4.Heat_Index t, rc4.county
+                                WHERE t.countyFIPS = rc4.county.countyFIPS
+                                )
+                        GROUP BY name, countyFIPS, year
+                        ) summerStats
+                JOIN
+                        rc4.Heat_Index ON rc4.Heat_Index.countyFIPS = summerStats.countyFIPS
+                                        AND TO_CHAR(rc4.Heat_Index.HI_Date, 'YYYY') = summerStats.year
+                %s
+                GROUP BY rc4.Heat_Index.countyFIPS, name, year
+                ORDER BY rc4.Heat_Index.countyFIPS ASC, year ASC
+                """ % (numstdev, outerWhereClause)
+
+                cursor = connection.cursor()
+
+                data = cursor.execute(dbQuery)  # Cursor.execute returns an iterator that contains the results of the query
+
+                x = []
+                y = []
+
+                for row in data:
+                        x.append(row[2])
+                        y.append(row[3])
+
+                plt.plot(x, y)
+
         plt.xlabel('X')
         plt.ylabel('Y')
+        plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
-                labelbottom=False  # labels along the bottom edge are off
+                #labelbottom=False  # labels along the bottom edge are off
         ) 
 
         buf = BytesIO()
