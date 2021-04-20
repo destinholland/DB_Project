@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 import datetime
+from textwrap import wrap
 
 def GraphOne(counties, start, end, connection):
         plt.clf()
@@ -56,10 +57,27 @@ def GraphOne(counties, start, end, connection):
         plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.xlabel('Month/Year')
         plt.ylabel('Average Monthly Heat Index')
-        """ plt.tick_params(
+
+        startMonth = ''
+        endMonth = ''
+        monthNum = [
+        ('05', 'May'),
+        ('06', 'June'),
+        ('07', 'July'),
+        ('08', 'August'),
+        ('09', 'September')]
+
+        for month in monthNum:
+                if str(start)[5:7] == month[0]:
+                        startMonth = month[1]
+                if str(end)[5:7] == month[0]:
+                        endMonth = month[1]
+        title = "\n".join(wrap('Average Heat Index value From ' + startMonth + ', ' + str(start)[0:4] + " To " + endMonth + ', ' + str(end)[0:4] + ', by month', 50))
+        plt.title(title)
+        plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 labelbottom=False  # labels along the bottom edge are off
-        ) """
+        )
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
@@ -157,7 +175,9 @@ def GraphTwo(county, ethnicities, start, end, connection):
 
         plt.xlabel('Year')
         plt.ylabel('Percent Ethnicity Change')
-        plt.legend(labels=legend, loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=1, fancybox=True, shadow=True)
+        plt.legend(labels=legend, loc='lower center', ncol=1, fancybox=True, shadow=True)
+        title = "\n".join(wrap('Percent change in ethnic population From ' + str(start) + " To " + str(end) + ', from year to year', 40))
+        plt.title(title)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 #labelbottom=False  # labels along the bottom edge are off
@@ -224,7 +244,7 @@ def GraphThree(counties, start, end, threshold, connection):
 
         plt.xlabel('Month/Year')
         plt.ylabel('Number of days above Threshold')
-        title = 'Number of days above ' + threshold + '℉ per month'
+        title = 'Number of days with a Heat Index above ' + threshold + '℉, by month'
         plt.title(title)
         plt.legend(labels=legend, fancybox=True, shadow=True)
         """ plt.tick_params(
@@ -327,6 +347,8 @@ def GraphFour(counties, start, end, connection):
         plt.xlabel('Year')
         plt.ylabel('Correlation Coefficient')
         plt.legend(labels=legend, fancybox=True, shadow=True)
+        title = "\n".join(wrap('Correlation between Yearly UV Irradiance and Average Yearly Heat Index From ' + str(start) + " To " + str(end) + ', by year', 60))
+        plt.title(title)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 #labelbottom=False  # labels along the bottom edge are off
@@ -392,6 +414,8 @@ def GraphFive(stdev, counties, start, end, connection):
 
         plt.xlabel('X')
         plt.ylabel('Y')
+        title = "\n".join(wrap('Number of days hotter than ' + str(stdev) + ' standard deviation(s) less than the Summer Mean Heat Index From ' + str(start) + " To " + str(end) + ', by year', 60))
+        plt.title(title)
         plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
