@@ -92,8 +92,8 @@ class QueryOneForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.required()], format='%Y-%m-%d', default=datetime.date(1979, 5, 1))
-    dEnd = DateField('Date End (optional)', [validators.required()], format='%Y-%m-%d', default=datetime.date(2016, 9, 1))
+    dStart = DateField('Date Start', [validators.required()], format='%Y-%m-%d', default=datetime.date(1979, 5, 1))
+    dEnd = DateField('Date End', [validators.required()], format='%Y-%m-%d', default=datetime.date(2016, 9, 1))
     submit = SubmitField('Submit')
 
 # TODO put constraints on the date start and end date
@@ -247,9 +247,9 @@ class QueryThreeForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.required()], format='%Y-%m-%d', default=datetime.date(1979, 5, 1))
-    dEnd = DateField('Date End (optional)', [validators.required()], format='%Y-%m-%d', default=datetime.date(2016, 9, 1))
-    threshold = DecimalField('Heat Value Threshold (optional)', [validators.required()], default=85.0)
+    dStart = DateField('Date Start', [validators.required()], format='%Y-%m-%d', default=datetime.date(1979, 5, 1))
+    dEnd = DateField('Date End', [validators.required()], format='%Y-%m-%d', default=datetime.date(2016, 9, 1))
+    threshold = DecimalField('Heat Value Threshold', [validators.required()], default=85.0)
     submit = SubmitField('Submit')
 
 class QueryFourForm(FlaskForm):

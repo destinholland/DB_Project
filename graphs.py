@@ -50,8 +50,8 @@ def GraphOne(counties, start, end, connection):
 
                 plt.plot(x, y)
 
-        plt.legend(legend)
-        plt.xlabel('Month')
+        plt.legend(labels=legend, fancybox=True, shadow=True)
+        plt.xlabel('Month/Year')
         plt.ylabel('Average Monthly Heat Index')
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
@@ -154,7 +154,7 @@ def GraphTwo(county, ethnicities, start, end, connection):
 
         plt.xlabel('Year')
         plt.ylabel('Percent Ethnicity Change')
-        plt.legend(legend)
+        plt.legend(labels=legend, loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=1, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 #labelbottom=False  # labels along the bottom edge are off
@@ -217,9 +217,11 @@ def GraphThree(counties, start, end, threshold, connection):
 
                 plt.plot(x, y)
 
-        plt.xlabel('X')
-        plt.ylabel('Y')
-        plt.legend(legend)
+        plt.xlabel('Month/Year')
+        plt.ylabel('Number of days above Threshold')
+        title = 'Number of days above ' + threshold + '℉ per month'
+        plt.title(title)
+        plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 labelbottom=False  # labels along the bottom edge are off
@@ -319,7 +321,7 @@ def GraphFour(counties, start, end, connection):
 
         plt.xlabel('Year')
         plt.ylabel('Correlation Coefficient')
-        plt.legend(legend)
+        plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 #labelbottom=False  # labels along the bottom edge are off
@@ -385,7 +387,7 @@ def GraphFive(stdev, counties, start, end, connection):
 
         plt.xlabel('X')
         plt.ylabel('Y')
-        plt.legend(legend)
+        plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 #labelbottom=False  # labels along the bottom edge are off
