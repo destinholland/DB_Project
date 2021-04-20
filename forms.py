@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, SelectMultipleField, DecimalField, validators
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from wtforms.fields.html5 import DateField, IntegerField
+import datetime
 
 
 class RegistrationForm(FlaskForm):
@@ -91,8 +92,8 @@ class QueryOneForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
+    dStart = DateField('Date Start (optional)', [validators.required()], format='%Y-%m-%d', default=datetime.date(1979, 5, 1))
+    dEnd = DateField('Date End (optional)', [validators.required()], format='%Y-%m-%d', default=datetime.date(2016, 9, 1))
     submit = SubmitField('Submit')
 
 # TODO put constraints on the date start and end date
@@ -173,8 +174,8 @@ class QueryTwoForm(FlaskForm):
         ('5', 'Hispanic All Races'),
         ('6', 'All Non-White Races including Hispanic'),
         ('7', 'Other including Hispanic')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
+    dStart = IntegerField('Start Year', [validators.required(), validators.NumberRange(min=1996, max=2017, message="Please input a value between %(min)s and %(max)s")], default=1996)
+    dEnd = IntegerField('End Year', [validators.required(), validators.NumberRange(min=1997, max=2018, message="Please input a value between %(min)s and %(max)s")], default=2018)
     submit = SubmitField('Submit')
 
 class QueryThreeForm(FlaskForm):
@@ -246,9 +247,9 @@ class QueryThreeForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
-    threshold = DecimalField('Heat Value Threshold (optional)', [validators.optional()])
+    dStart = DateField('Date Start (optional)', [validators.required()], format='%Y-%m-%d', default=datetime.date(1979, 5, 1))
+    dEnd = DateField('Date End (optional)', [validators.required()], format='%Y-%m-%d', default=datetime.date(2016, 9, 1))
+    threshold = DecimalField('Heat Value Threshold (optional)', [validators.required()], default=85.0)
     submit = SubmitField('Submit')
 
 class QueryFourForm(FlaskForm):
@@ -320,8 +321,8 @@ class QueryFourForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = IntegerField('Start Year (optional)', [validators.optional(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")])
-    dEnd = IntegerField('End Year (optional)', [validators.optional(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")])
+    dStart = IntegerField('Start Year', [validators.required(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")], default=2005)
+    dEnd = IntegerField('End Year', [validators.required(), validators.NumberRange(min=2005, max=2016, message="Please input a value between %(min)s and %(max)s")], default=2016)
     submit = SubmitField('Submit')
 
 
@@ -395,7 +396,7 @@ class QueryFiveForm(FlaskForm):
         ('Wakulla', 'Wakulla'),
         ('Walton', 'Walton'),
         ('Washington', 'Washington')])
-    dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
-    dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
-    stdev = IntegerField('Number of Standard Deviation', [validators.optional()])
+    dStart = IntegerField('Start Year', [validators.required(), validators.NumberRange(min=1979, max=2016, message="Please input a value between %(min)s and %(max)s")], default=1979)
+    dEnd = IntegerField('End Year', [validators.required(), validators.NumberRange(min=1979, max=2016, message="Please input a value between %(min)s and %(max)s")], default=2016)
+    stdev = IntegerField('Number of Standard Deviations', [validators.required(), validators.NumberRange(min=1, max=10, message="Please input a value between %(min)s and %(max)s")], default=1)
     submit = SubmitField('Submit')
