@@ -156,7 +156,7 @@ def GraphThree(counties, start, end, threshold, connection):
         for county in counties:
                 legend.append(str(county))
                 whereClause = f"WHERE name = \'" + str(county) + '\''
-                outerWhereClause = f"WHERE name IN ({str(counties).replace('[', '').replace(']','')})"
+                #outerWhereClause = f"WHERE name IN ({str(counties).replace('[', '').replace(']','')})"
 
                 if start != '':
                         outerWhereClause = outerWhereClause + f" AND (year >= {str(start)[0:4]})"
@@ -303,7 +303,7 @@ def GraphFour(counties, start, end, connection):
         plt.legend(legend)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
-                labelbottom=False  # labels along the bottom edge are off
+                #labelbottom=False  # labels along the bottom edge are off
         ) 
         buf = BytesIO()
         plt.savefig(buf, format="png")
