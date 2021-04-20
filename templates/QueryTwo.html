@@ -4,15 +4,21 @@
 {% block content %}
     <div class="q-content">
         <div class="content-section">
-            <form method="POST" action="/queryfour">
+            <form method="POST" action="/querytwo">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
 
-                    <legend class="border-bottom mb-4" style="color: #005F60; text-align: center; border-bottom-color: #005F60">Choose Counties and Data Range 2005 to 2015</legend>
+                    <legend class="border-bottom mb-4" style="color: #005F60; text-align: center; border-bottom-color: #005F60">Choose One County and Select Ethnicities of Interest</legend>
 
                     <div class="form-group">
-                        {{ form.counties.label(class="form-control-label") }}
-                        {{ form.counties(class="form-control form-control-lg") }}
+                        {{ form.county.label(class="form-control-label") }}
+                        {{ form.county(class="form-control form-control-lg") }}
+                    </div>
+
+
+                    <div class="form-group">
+                        {{ form.ethnicities.label(class="form-control-label") }}
+                        {{ form.ethnicities(class="form-control form-control-lg") }}
                     </div>
 
 

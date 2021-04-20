@@ -49,6 +49,17 @@
               </ul>
         </div>
     </div>
+    <div class="home-content" style="margin-left: 1000px;">
+        <div class="content-section">
+            <h3>Total tuples in the database:</h3>
+            <h4>{{ tupleNum }}</h4>
+            <form method="POST" action="/">
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-info btn-block") }}
+                </div>
+            </form>
+        </div>
+    </div>
 
 
 {% endblock %}
