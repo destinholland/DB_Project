@@ -201,7 +201,7 @@ def queryFive():
 
 
     if request.method == 'POST' and form.validate():
-        imgSrc = GraphFive(request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
+        imgSrc = GraphFive(request.form["stdev"], request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
         return render_template('QueryFive.html', title='Query Five', form=form, imgSrc=imgSrc)
 
 

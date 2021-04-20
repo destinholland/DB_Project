@@ -314,8 +314,12 @@ def GraphFour(counties, start, end, connection):
         return imgSrc
 
 
-def GraphFive(counties, start, end, connection):
+def GraphFive(stdev, counties, start, end, connection):
         outerWhereClause = f"AND name IN ({str(counties).replace('[', '').replace(']','')})"   
+        numstdev = 1
+
+        if stdev != '':
+                numstdev = stdev
 
         if start != '':
                 outerWhereClause = outerWhereClause + f" AND (year <= {str(start)[0:4]})"
@@ -326,7 +330,7 @@ def GraphFive(counties, start, end, connection):
         dbQuery = """
         SELECT rc4.Heat_Index.countyFIPS, name, year, COUNT(*) as numHotDays --Counts the number of days hotter than the lower bound (x SDs away from mean) and orders
         FROM 
-                (SELECT countyFIPS, name, year, (AVG(heat_value) - 1 * STDDEV(heat_value)) as lowerBoundSummer --Calculates x Standard Deviations away from the year's summer mean heat value (lower bound only)
+                (SELECT countyFIPS, name, year, (AVG(heat_value) - %s * STDDEV(heat_value)) as lowerBoundSummer --Calculates x Standard Deviations away from the year's summer mean heat value (lower bound only)
                 FROM (  SELECT t.*, rc4.county.name, EXTRACT(YEAR FROM HI_Date) as year --Extracts year for grouping
                         FROM rc4.Heat_Index t, rc4.county
                         WHERE t.countyFIPS = rc4.county.countyFIPS
@@ -339,7 +343,7 @@ def GraphFive(counties, start, end, connection):
         WHERE heat_value >= lowerBoundSummer %s
         GROUP BY rc4.Heat_Index.countyFIPS, name, year
         ORDER BY rc4.Heat_Index.countyFIPS ASC, year ASC
-        """ % (outerWhereClause)
+        """ % (numstdev, outerWhereClause)
 
         cursor = connection.cursor()
 

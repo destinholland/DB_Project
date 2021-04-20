@@ -397,4 +397,5 @@ class QueryFiveForm(FlaskForm):
         ('Washington', 'Washington')])
     dStart = DateField('Date Start (optional)', [validators.optional()], format='%Y-%m-%d')
     dEnd = DateField('Date End (optional)', [validators.optional()], format='%Y-%m-%d')
+    stdev = IntegerField('Number of Standard Deviation', [validators.optional()])
     submit = SubmitField('Submit')
