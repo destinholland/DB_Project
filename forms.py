@@ -19,6 +19,9 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
 
 
+class TotalTuplesForm(FlaskForm):
+    submit = SubmitField("Count Tuples")
+
 class QueryOneForm(FlaskForm):
     counties = SelectMultipleField('Counties', [validators.required()], choices = [
         ('Alachua', 'Alachua'),
