@@ -6,6 +6,7 @@ from io import BytesIO
 
 def GraphOne(counties, start, end, connection):
         plt.clf()
+        plt.figure(figsize=(15, 5))
         legend = []
 
         for county in counties:
@@ -48,7 +49,7 @@ def GraphOne(counties, start, end, connection):
                         x.append(row[2] + str(row[1]))
                         y.append(row[3])
                 
-                plt.plot(x, y)
+                plt.plot(x, y, marker='o')
 
         plt.legend(legend)
         plt.xlabel('Month')

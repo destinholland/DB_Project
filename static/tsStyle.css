@@ -214,6 +214,21 @@ nav a
 }
 
 
+.g-content
+{
+    border: 2px solid #FD5901;
+    padding: 25px;
+    border-radius: 25px;
+    background: papayawhip;
+    position: absolute;
+    width: 705px;
+    height: fit-content;
+    margin-top: 15%;
+    margin-left: 0;
+    overflow-x: scroll;
+}
+
+
 .home-content
 {
     border: 2px solid #FD5901;
