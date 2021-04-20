@@ -1,11 +1,11 @@
 from time import strftime
 from flask import Flask, render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm, TotalTuplesForm, QueryOneForm, QueryTwoForm, QueryThreeForm, QueryFourForm
+from forms import RegistrationForm, LoginForm, TotalTuplesForm, QueryOneForm, QueryTwoForm, QueryThreeForm, QueryFourForm, QueryFiveForm
 from flask_bootstrap import Bootstrap
 from datetime import datetime
 import cx_Oracle
 from DBconnection import connection
-from graphs import GraphOne, GraphTwo, GraphThree, GraphFour
+from graphs import GraphOne, GraphTwo, GraphThree, GraphFour, GraphFive
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -177,6 +177,36 @@ def queryFour():
 
     imgSrc = "src=static/defaultgraph.png"
     return render_template('QueryFour.html', title='Query Four', form=form, imgSrc=imgSrc)
+
+
+
+
+
+
+@app.route('/queryfive', methods=['GET', 'POST'])
+def queryFive():
+
+    form = QueryFiveForm(request.form)
+
+    """ if form.validate():
+        counties = ', '.join(form.counties.data)
+        counties = '(' + counties + ')'
+        print(counties)
+
+        start_date = form.dStart.data.strftime('%m/%Y')
+        print(start_date)
+
+        end_date = form.dEnd.data.strftime('%m/%Y')
+        print(end_date) """
+
+
+    if request.method == 'POST' and form.validate():
+        imgSrc = GraphFive(request.form["stdev"], request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
+        return render_template('QueryFive.html', title='Query Five', form=form, imgSrc=imgSrc)
+
+
+    imgSrc = "src=static/defaultgraph.png"
+    return render_template('QueryFive.html', title='Query Five', form=form, imgSrc=imgSrc)
 
 if __name__ == '__main__':
     app.run(debug=True)
