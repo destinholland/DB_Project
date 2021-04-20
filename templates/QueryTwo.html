@@ -1,0 +1,53 @@
+{% extends "queryBase.html" %}
+{#{% block TopRightIcon %}<a href="{{ url_for('home') }}"><i id="home_icon" class="fas fa-home" aria-hidden="true"></i></a>{% endblock %}#}
+
+{% block content %}
+    <div class="q-content">
+        <div class="content-section">
+            <form method="POST" action="/querytwo">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+
+                    <legend class="border-bottom mb-4" style="color: #005F60; text-align: center; border-bottom-color: #005F60">Choose One County and Select Ethnicities of Interest</legend>
+
+                    <div class="form-group">
+                        {{ form.county.label(class="form-control-label") }}
+                        {{ form.county(class="form-control form-control-lg") }}
+                    </div>
+
+
+                    <div class="form-group">
+                        {{ form.ethnicities.label(class="form-control-label") }}
+                        {{ form.ethnicities(class="form-control form-control-lg") }}
+                    </div>
+
+
+                    <div class="form-group">
+                        {{ form.dStart.label(class="form-control-label") }}
+                        {{ form.dStart(class="form-control form-control-lg") }}
+                    </div>
+
+
+                    <div class="form-group">
+                        {{ form.dEnd.label(class="form-control-label") }}
+                        {{ form.dEnd(class="form-control form-control-lg") }}
+                    </div>
+
+                </fieldset>
+
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-info btn-block") }}
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content2 %}
+    <div class="q-content">
+        <div class="content-section">
+            <img {{ imgSrc }} alt="Graph Picture">
+        </div>
+    </div>
+{% endblock %}
