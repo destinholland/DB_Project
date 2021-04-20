@@ -1,6 +1,6 @@
 from time import strftime
 from flask import Flask, render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm, QueryOneForm, QueryTwoForm, QueryThreeForm, QueryFourForm
+from forms import RegistrationForm, LoginForm, TotalTuplesForm, QueryOneForm, QueryTwoForm, QueryThreeForm, QueryFourForm
 from flask_bootstrap import Bootstrap
 from datetime import datetime
 import cx_Oracle
@@ -30,7 +30,64 @@ def add():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html', title='home')
+    
+    form = TotalTuplesForm(request.form)
+
+    tupleNum = ''
+
+    if request.method == 'POST':
+
+        dbQuery = """
+        SELECT SUM(NUM)
+        FROM (
+            SELECT COUNT(*) AS NUM
+            FROM RC4.Average_uv_irradiance
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.COUNTY
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.DEMOGRAPHIC
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.ETHNICITY
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.HEAT_INDEX
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.HEAT_MORTALITIES
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.HEAT_RELATED_HOSPITALIZATIONS
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.LABORATORY
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.MEASUREMENT_UNIT
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.MELANOMA_CASES
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.MORTALITIES
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.PRECIPITATION
+            UNION ALL
+            SELECT COUNT(*) AS NUM
+            FROM RC4.STATE
+        )
+        """
+
+        cursor = connection.cursor()
+
+        data = cursor.execute(dbQuery)
+
+        tupleNum = next(data)[0]
+
+    return render_template('home.html', title='home', form=form, tupleNum=tupleNum)
 
 
 @app.route('/queryone', methods=['GET', 'POST'])
