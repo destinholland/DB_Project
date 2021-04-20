@@ -69,10 +69,24 @@ def GraphOne(counties, start, end, connection):
 def GraphTwo(county, ethnicities, start, end, connection):
 
         plt.clf()
+
         legend = []
 
         for ethnicity in ethnicities:
-                legend.append(str(ethnicity))
+                ethnicName = ''
+                ethnicCode = [
+                ('1', 'White including Hispanic'),
+                ('2', 'Black including Hispanic'),
+                ('3', 'Asian/Pacific Islander including Hispanic'),
+                ('4', 'American Indian/Alaskan Native including Hispanic'),
+                ('5', 'Hispanic All Races'),
+                ('6', 'All Non-White Races including Hispanic'),
+                ('7', 'Other including Hispanic')]
+                for code in ethnicCode:
+                        if str(ethnicity) == code[0]:
+                                ethnicName = code[1]
+
+                legend.append(ethnicName)
                 outerWhereClause = f"WHERE countyFIPS = " + str(county)
 
                 # ethnicities2 = str(ethnicities).replace('[', '').replace(']', '').replace("'", '')
@@ -140,9 +154,10 @@ def GraphTwo(county, ethnicities, start, end, connection):
 
         plt.xlabel('Year')
         plt.ylabel('Percent Ethnicity Change')
+        plt.legend(legend)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
-                labelbottom=False  # labels along the bottom edge are off
+                #labelbottom=False  # labels along the bottom edge are off
         )
 
         buf = BytesIO()
