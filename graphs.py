@@ -373,7 +373,7 @@ def GraphFive(stdev, counties, start, end, connection):
         plt.legend(legend)
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
-                labelbottom=False  # labels along the bottom edge are off
+                #labelbottom=False  # labels along the bottom edge are off
         ) 
 
         buf = BytesIO()
