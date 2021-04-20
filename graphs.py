@@ -55,6 +55,7 @@ def GraphOne(counties, start, end, connection):
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
+
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
         imgSrc = f"src=data:image/png;base64,{data}"
 
@@ -119,7 +120,7 @@ def GraphThree(counties, start, end, threshold, connection):
         return imgSrc
 
 def GraphFour(counties, start, end, connection):
-
+    
         whereClause = f"WHERE name IN ({str(counties).replace('[', '').replace(']','')})"
 
         if start != '':
@@ -207,6 +208,63 @@ def GraphFour(counties, start, end, connection):
         buf = BytesIO()
         plt.savefig(buf, format="png")
         data = base64.b64encode(buf.getbuffer()).decode("ascii")
+        imgSrc = f"src=data:image/png;base64,{data}"
+
+        return imgSrc
+
+
+def GraphFive(counties, start, end, connection):
+        outerWhereClause = f"AND name IN ({str(counties).replace('[', '').replace(']','')})"   
+
+        if start != '':
+                outerWhereClause = outerWhereClause + f" AND (year <= {str(start)[0:4]})"
+        if end != '':
+                outerWhereClause = outerWhereClause + f" AND (year <= {str(end)[0:4]})"
+        
+
+        dbQuery = """
+        SELECT rc4.Heat_Index.countyFIPS, name, year, COUNT(*) as numHotDays --Counts the number of days hotter than the lower bound (x SDs away from mean) and orders
+        FROM 
+                (SELECT countyFIPS, name, year, (AVG(heat_value) - 1 * STDDEV(heat_value)) as lowerBoundSummer --Calculates x Standard Deviations away from the year's summer mean heat value (lower bound only)
+                FROM (  SELECT t.*, rc4.county.name, EXTRACT(YEAR FROM HI_Date) as year --Extracts year for grouping
+                        FROM rc4.Heat_Index t, rc4.county
+                        WHERE t.countyFIPS = rc4.county.countyFIPS
+                        )
+                GROUP BY name, countyFIPS, year
+                ) summerStats
+        JOIN
+                rc4.Heat_Index ON rc4.Heat_Index.countyFIPS = summerStats.countyFIPS
+                                AND TO_CHAR(rc4.Heat_Index.HI_Date, 'YYYY') = summerStats.year
+        WHERE heat_value >= lowerBoundSummer %s
+        GROUP BY rc4.Heat_Index.countyFIPS, name, year
+        ORDER BY rc4.Heat_Index.countyFIPS ASC, year ASC
+        """ % (outerWhereClause)
+
+        cursor = connection.cursor()
+
+        data = cursor.execute(dbQuery)  # Cursor.execute returns an iterator that contains the results of the query
+
+        x = []
+        y = []
+
+        for row in data:
+            x.append(row[2])
+            y.append(row[3])
+
+        plt.clf()
+        plt.plot(x, y)
+        plt.xlabel('X')
+        plt.ylabel('Y')
+        plt.tick_params(
+                axis='x',          # changes apply to the x-axis
+                labelbottom=False  # labels along the bottom edge are off
+        ) 
+
+        buf = BytesIO()
+        plt.savefig(buf, format="png")
+
+        data = base64.b64encode(buf.getbuffer()).decode("ascii")
+
         imgSrc = f"src=data:image/png;base64,{data}"
 
         return imgSrc
