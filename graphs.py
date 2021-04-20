@@ -74,10 +74,10 @@ def GraphOne(counties, start, end, connection):
                         endMonth = month[1]
         title = "\n".join(wrap('Average Heat Index value From ' + startMonth + ', ' + str(start)[0:4] + " To " + endMonth + ', ' + str(end)[0:4] + ', by month', 50))
         plt.title(title)
-        plt.tick_params(
+        """ plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 labelbottom=False  # labels along the bottom edge are off
-        )
+        ) """
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
