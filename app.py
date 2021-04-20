@@ -104,7 +104,6 @@ def queryFour():
         imgSrc = GraphFour(request.form.getlist("counties"), request.form["dStart"], request.form["dEnd"], connection)
         return render_template('QueryFour.html', title='Query Four', form=form, imgSrc=imgSrc)
 
-
     imgSrc = "src=static/defaultgraph.png"
     return render_template('QueryFour.html', title='Query Four', form=form, imgSrc=imgSrc)
 
