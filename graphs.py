@@ -5,6 +5,7 @@ import base64
 from io import BytesIO
 import datetime
 from textwrap import wrap
+from matplotlib.ticker import FormatStrFormatter
 
 def GraphOne(counties, start, end, connection):
         plt.clf()
@@ -349,6 +350,7 @@ def GraphFour(counties, start, end, connection):
         plt.legend(labels=legend, fancybox=True, shadow=True)
         title = "\n".join(wrap('Correlation between Yearly UV Irradiance and Average Yearly Heat Index From ' + str(start) + " To " + str(end) + ', by year', 60))
         plt.title(title)
+        #plt.gca().yaxis.set_major_formatter(StrMethodFormatter('{x:,.2f}')) # No decimal places
         plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 #labelbottom=False  # labels along the bottom edge are off
