@@ -26,7 +26,7 @@
                 </div>
             </nav>
         </div>
-        <div class="row">
+        <div class="row pre-scrollable">
             <div class="col-md sidebar">
               <ul>
                   <li><a href="{{ url_for('queryOne') }}"><i class="fas fa-temperature-high" aria-hidden="true"></i></a></li>
@@ -45,7 +45,20 @@
                     {% block content2 %}{% endblock %}
             </div>
 
+            <div class="col-md query">
+                    <div class="home-content" style="margin-top: 45%;">
+                        <div class="content-section">
+                            <h1>Query Explanation</h1>
+                            <ul>
+                                  <li>
+                                          {% block content3 %}{% endblock %}
+                                  </li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
         </div>
+
     </main>
 
 </body>

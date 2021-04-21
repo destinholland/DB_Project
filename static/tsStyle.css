@@ -12,6 +12,7 @@ html
 {
     height: 100%;
     width: 100%;
+    overflow-y: scroll;
 }
 
 
@@ -23,6 +24,7 @@ h1
 
 body
 {
+    overflow-y: scroll;
     height: 100%;
     width: 100%;
     background: linear-gradient(to right,
@@ -268,15 +270,15 @@ nav a
 .query
 {
     margin-left: 15%;
-    margin-top: -5%;
+    margin-top: -8%;
     position: fixed;
     /*height: 35%;*/
 }
 
 .graph
 {
-    margin-top: -5%;
-    margin-left: 60%;
+    margin-top: -8%;
+    margin-left: 45%;
     position: fixed;
     /*height: 35%;*/
 }
@@ -285,4 +287,10 @@ nav a
 {
     margin-left: 90%;
     position: fixed;
+}
+
+.count
+{
+    margin-left: 50%;
+    margin-top: -8%;
 }
