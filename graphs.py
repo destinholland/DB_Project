@@ -3,6 +3,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
+import datetime
 from textwrap import wrap
 
 def GraphOne(counties, start, end, connection):
@@ -46,10 +47,12 @@ def GraphOne(counties, start, end, connection):
                 y = []
 
                 for row in data:
-                        x.append(row[2] + str(row[1]))
+                        string = row[2] + ' ' + str(row[1])
+                        dtValue = datetime.datetime.strptime(string, "%B %Y").date()
+                        x.append(dtValue)
                         y.append(row[3])
 
-                plt.plot(x, y)
+                plt.plot(x, y, marker='o')
 
         plt.legend(labels=legend, fancybox=True, shadow=True)
         plt.xlabel('Month/Year')
@@ -71,10 +74,10 @@ def GraphOne(counties, start, end, connection):
                         endMonth = month[1]
         title = "\n".join(wrap('Average Heat Index value From ' + startMonth + ', ' + str(start)[0:4] + " To " + endMonth + ', ' + str(end)[0:4] + ', by month', 50))
         plt.title(title)
-        plt.tick_params(
+        """ plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 labelbottom=False  # labels along the bottom edge are off
-        )
+        ) """
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
@@ -168,7 +171,7 @@ def GraphTwo(county, ethnicities, start, end, connection):
                         x.append(row[2])
                         y.append(row[5])
 
-                plt.plot(x, y)
+                plt.plot(x, y, marker='o')
 
         plt.xlabel('Year')
         plt.ylabel('Percent Ethnicity Change')
@@ -232,20 +235,22 @@ def GraphThree(counties, start, end, threshold, connection):
                 y = []
 
                 for row in data:
-                        x.append(row[2] + str(row[1]))
+                        string = row[2] + ' ' + str(row[1])
+                        dtValue = datetime.datetime.strptime(string, "%B %Y").date()
+                        x.append(dtValue)
                         y.append(row[3])
 
-                plt.plot(x, y)
+                plt.plot(x, y, marker='o')
 
         plt.xlabel('Month/Year')
         plt.ylabel('Number of days above Threshold')
         title = 'Number of days with a Heat Index above ' + threshold + '℉, by month'
         plt.title(title)
         plt.legend(labels=legend, fancybox=True, shadow=True)
-        plt.tick_params(
+        """ plt.tick_params(
                 axis='x',          # changes apply to the x-axis
                 labelbottom=False  # labels along the bottom edge are off
-        )
+        ) """
 
         buf = BytesIO()
         plt.savefig(buf, format="png")
@@ -336,7 +341,9 @@ def GraphFour(counties, start, end, connection):
                         x.append(row[2])
                         y.append(row[3])
 
-                plt.plot(x, y)
+                plt.plot(x, y, marker='o')
+
+
         plt.xlabel('Year')
         plt.ylabel('Correlation Coefficient')
         plt.legend(labels=legend, fancybox=True, shadow=True)
@@ -403,7 +410,7 @@ def GraphFive(stdev, counties, start, end, connection):
                         x.append(row[2])
                         y.append(row[3])
 
-                plt.plot(x, y)
+                plt.plot(x, y, marker='o')
 
         plt.xlabel('Year')
         plt.ylabel('Number of days')
