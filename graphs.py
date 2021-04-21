@@ -405,8 +405,8 @@ def GraphFive(stdev, counties, start, end, connection):
 
                 plt.plot(x, y)
 
-        plt.xlabel('X')
-        plt.ylabel('Y')
+        plt.xlabel('Year')
+        plt.ylabel('Number of days')
         title = "\n".join(wrap('Number of days hotter than ' + str(stdev) + ' standard deviation(s) less than the Summer Mean Heat Index From ' + str(start) + " To " + str(end) + ', by year', 60))
         plt.title(title)
         plt.legend(labels=legend, fancybox=True, shadow=True)
