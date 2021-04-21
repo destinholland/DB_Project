@@ -8,7 +8,7 @@
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
 
-                    <legend class="border-bottom mb-4" style="color: #005F60; text-align: center; border-bottom-color: #005F60">Choose Counties and Data Range</legend>
+                    <legend class="border-bottom mb-4" style="color: #005F60; text-align: center; border-bottom-color: #005F60">Choose Counties and Data Range (1979 - 2016)</legend>
 
                     <div class="form-group">
                         {{ form.counties.label(class="form-control-label") }}
@@ -47,5 +47,6 @@
 {% endblock %}
 
 {% block content3 %}
-    <p></p>
+    <p>Calculates the monthly average heat index for </p>
+    <p>a given county over a selected date range.</p>
 {% endblock %}

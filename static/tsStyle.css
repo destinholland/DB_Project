@@ -8,6 +8,12 @@
 }
 
 
+p {
+  line-height: 26px;   /* within paragraph */
+  margin-bottom: 5px; /* between paragraphs */
+  }
+
+
 html
 {
     height: 100%;
@@ -49,7 +55,7 @@ label.logo, .logo
     /*color: #490F4A;*/
     margin-left: 0;
     color: papayawhip;
-    font-size: 80px;
+    font-size: 70px;
     padding: 0 100px;
     font-weight: bold;
 }
@@ -278,7 +284,7 @@ nav a
 .graph
 {
     margin-top: -8%;
-    margin-left: 45%;
+    margin-left: 50%;
     position: fixed;
     /*height: 35%;*/
 }

@@ -8,7 +8,7 @@
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
 
-                    <legend class="border-bottom mb-4" style="color: #005F60; text-align: center; border-bottom-color: #005F60">Choose One County and Select Ethnicities of Interest</legend>
+                    <legend class="border-bottom mb-4" style="color: #005F60; text-align: center; border-bottom-color: #005F60">Choose One County and Select Ethnicities of Interest (1996 - 2018)</legend>
 
                     <div class="form-group">
                         {{ form.county.label(class="form-control-label") }}
@@ -50,4 +50,9 @@
             <img {{ imgSrc }} alt="Graph Picture">
         </div>
     </div>
+{% endblock %}
+
+{% block content3 %}
+    <p>Plots the percent change in selected ethnic population </p>
+    <p>percentages over a range of years in a selected county.</p>
 {% endblock %}
