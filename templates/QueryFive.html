@@ -51,3 +51,15 @@
         </div>
     </div>
 {% endblock %}
+
+{% block content3 %}
+    <p>
+        Query 5 calculates the number of days that are hotter than 'x' standard deviation(s) less than the summer's average heat index value.
+    </p>
+    <p>
+        First the summer's average heat index value is calculated for the months of May to September. Then, the standard deviation is calculated for the summer months as well.
+    </p>
+    <p>
+        We then subtract the standard deviation value times the user's input from the summer average heat index and count the number of days hotter than that value.
+    </p>
+{% endblock %}
